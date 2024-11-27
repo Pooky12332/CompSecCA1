@@ -4,6 +4,7 @@
 // of Encryption and Decryption with Java AES 
 import java.nio.charset.StandardCharsets;
 import java.security.spec.KeySpec;
+import java.security.SecureRandom;
 import java.util.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -14,11 +15,10 @@ import javax.crypto.spec.SecretKeySpec;
 
 class AES {
   // Class private variables
-  private static final String SECRET_KEY = "my_super_secret_key_ho_ho_ho";
   private static final String SALT = "ssshhhhhhhhhhh!!!!";
 
   // This method use to encrypt to string
-  public static String encrypt(String strToEncrypt) {
+  public static String encrypt(String strToEncrypt, String SECRET_KEY) {
     try {
       // Create default byte array
       byte[] iv = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -45,7 +45,7 @@ class AES {
   }
 
   // This method use to decrypt to string
-  public static String decrypt(String strToDecrypt) {
+  public static String decrypt(String strToDecrypt, String SECRET_KEY) {
     try {
       // Default byte array
       byte[] iv = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };

@@ -1,5 +1,10 @@
-import java.util.Scanner;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.io.FileNotFoundException;
+import java.security.SecureRandom;
 import java.util.InputMismatchException;
+import java.util.Scanner;
 
 public class Main {
   public static void main(String[] args) {
@@ -29,6 +34,7 @@ public class Main {
   // Encrypting the file
   public static void encryptMenu() {
     Scanner kb = new Scanner(System.in);
+    AES aes = new AES();
     String filename = "";
 
     // Validating the filename
@@ -45,6 +51,34 @@ public class Main {
       System.out.println("Invalid input! Please enter a valid file name.");
     }
 
-    System.out.print(filename);
+    // Creating a key
+    String charList = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    SecureRandom sr = new SecureRandom();
+    String key = "";
+
+    for (int i = 0; i < 15; i++) {
+      key += charList.charAt(sr.nextInt(charList.length()));
+    }
+
+    // Reading the given file
+    String fileContents = "";
+
+    try (Scanner f = new Scanner(new File(filename))) {
+      while (f.hasNextLine()) {
+        fileContents += f.nextLine() + "\n";
+      }
+    } catch (FileNotFoundException e) {
+      System.out.println("Given file not found.");
+    }
+
+    // Encrypting the file and placing it into the output
+    String enContents = aes.encrypt(fileContents, key);
+
+    try (PrintWriter w = new PrintWriter(new PrintWriter("ciphertext.txt"))) {
+      w.println(enContents);
+      System.out.println("File has been encrypted successfully\nKey: " + key + "\nOutput is located in 'ciphertext.txt'");
+    } catch (FileNotFoundException e) {
+      System.out.println("Output file not found.");
+    }
   }
 }
