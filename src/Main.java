@@ -3,6 +3,8 @@ import java.security.SecureRandom;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+// - Clean up encryption method
+
 public class Main {
   public static void main(String[] args) {
     startMenu();
@@ -36,7 +38,7 @@ public class Main {
 
     // Validating the filename
     try {
-      System.out.print("Enter a file name: ");
+      System.out.print("Enter a filename: ");
       filename = kb.nextLine();
 
       if ((filename.isBlank()) || (filename.contains(" ")) || (!filename.contains(".txt"))) {
@@ -158,5 +160,22 @@ public class Main {
     }
 
     startMenu();
+  }
+
+  // Decryption the file
+  public static void decryptMenu() {
+    Scanner kb = new Scanner(System.in);
+    AES aes = new AES();
+    String filename = "";
+
+    // Validating the file name
+    try {
+      System.out.print("Enter a filename: ");
+      filename = kb.nextLine();
+
+      // IF should go here to catch cases where user inputs wrong
+    } catch (InputMismatchException e) {
+      System.out.println("Invalid input! Please enter a valid file name.");
+    }
   }
 }
