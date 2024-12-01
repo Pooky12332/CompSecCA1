@@ -32,9 +32,12 @@ public class Main {
 
   // Encrypting the file
   public static void encryptMenu() {
+    String charList = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    SecureRandom sr = new SecureRandom();
     Scanner kb = new Scanner(System.in);
     AES aes = new AES();
     String filename = "";
+    String key = "";
 
     // Validating the filename
     try {
@@ -52,16 +55,12 @@ public class Main {
     }
 
     // Creating a key
-    String charList = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    SecureRandom sr = new SecureRandom();
-    String key = "";
-
     for (int i = 0; i < 15; i++) {
       key += charList.charAt(sr.nextInt(charList.length()));
     }
 
     // Reading the given file
-    String fileContents = readFile(filename);
+    String fileContents = readFile(filename, true);
 
     // Encrypting the file and placing it into the output
     String enContents = aes.encrypt(fileContents, key);
@@ -117,7 +116,7 @@ public class Main {
     }
 
     // Reading the given file
-    String fileContents = readFile(filename);
+    String fileContents = readFile(filename, false);
 
     // Decrypting the file and placing into
     String deContents = aes.decrypt(fileContents, key);
@@ -143,12 +142,16 @@ public class Main {
   }
 
   // Function to read the contents of the given file
-  public static String readFile(String filename) {
+  public static String readFile(String filename, boolean newLine) {
     String fileContent = "";
 
     try (Scanner file = new Scanner(new File(filename))) {
       while (file.hasNextLine()) {
-        fileContent = file.nextLine();
+        if (newLine) {
+          fileContent += file.nextLine() + "\n";
+        } else {
+          fileContent += file.nextLine();
+        }
       }
     } catch (FileNotFoundException e) {
       fileContent = "[!] Given file not found. Please check your filename and try again.";
