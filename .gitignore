@@ -29,3 +29,4 @@ bin/
 .DS_Store
 ciphertext.txt
 in.txt
+plaintext.txt
